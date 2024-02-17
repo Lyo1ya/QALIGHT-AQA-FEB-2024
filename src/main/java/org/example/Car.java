@@ -2,10 +2,22 @@ package org.example;
 
 public class Car {
 
+    public final static String BRAND = "Ford";
+
     public Engine engine;
-    public String color;
 
     public int speed;
+    public String color;
+
+    public static void smth() {
+        System.out.println("Any car can do this");
+    }
+
+    public Car(String color, String engineVolume) {
+        this.color = color;
+        engine = new Engine(engineVolume);
+        System.out.println("Construction of car " + color + " is done");
+    }
 
     public void accelerate() {
         if (speed <= 100) {

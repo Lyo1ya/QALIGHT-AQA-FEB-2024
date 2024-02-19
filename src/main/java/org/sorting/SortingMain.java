@@ -12,13 +12,13 @@ public class SortingMain {
         printArray(ints);
     }
 
-    private static void printArray(int[] ints) {
+    public static void printArray(int[] ints) {
         for (int i = 0; i < ints.length; i++) {
             System.out.println(ints[i]);
         }
     }
 
-    private static void fillArray(int[] ints) {
+    public static void fillArray(int[] ints) {
         Random random = new Random();
 
         for (int i = 0; i < ints.length; i++) {

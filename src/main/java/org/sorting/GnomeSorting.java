@@ -5,7 +5,7 @@ import static org.sorting.SortingMain.printArray;
 
 public class GnomeSorting {
     public static void main(String[] args) {
-        int[] ints = new int[20];
+        int[] ints = new int[30];
 
         fillArray(ints);
         gnomeSort(ints);
@@ -27,8 +27,9 @@ public class GnomeSorting {
                 i++;
             }
         }
-//        for (int j = 0; j < ints.length; j++){
-//            for (int i = 0; i < ints.length; i++) {
+       // Alternative way:
+
+//        for (int i = 0; i < ints.length; i++) {
 //                if (i==0) {
 //                    i++;
 //                } else if (ints[i] < ints[i-1]) {
@@ -36,11 +37,9 @@ public class GnomeSorting {
 //                    int temp = ints[i - 1];
 //                    ints[i - 1] = ints[i];
 //                    ints[i] = temp;
-//                    i--;
-//                } else if (ints[i] >= ints[i-1]) {
-//                    i++;
+//                    i-=2; // because cycle iterates +1 by default
+//                } else if (ints[i] > ints[i-1]) {
 //                }
 //            }
-//        }
-    }
+   }
 }

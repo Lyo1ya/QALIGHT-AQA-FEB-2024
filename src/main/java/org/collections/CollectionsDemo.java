@@ -17,13 +17,17 @@ public class CollectionsDemo {
         registerCarForOwner("John", new Car("Black"), cars);
         registerCarForOwner("Jane", new Car("Yellow"), cars);
         registerCarForOwner("Jane", whiteCar, cars);
+        registerCarForOwner("Peter", new Car("Green"), cars);
+        registerCarForOwner("Jack", new Car("Green"), cars);
+        registerCarForOwner("Peter", new Car("Yellow"), cars);
+        registerCarForOwner("Peter", new Car("Brown"), cars);
         printCars(cars);
 
         //TODO: print owners names if he/she has a Green car
     }
 
     public static void registerCarForOwner(String ownerName, Car car, Map<String, Set<Car>> cars) {
-        if (cars.containsKey(ownerName)) {
+        if (cars.get(ownerName) != null) {
             cars.get(ownerName).add(car);
         } else {
             Set<Car> ownersCars = new HashSet<>();
@@ -33,8 +37,19 @@ public class CollectionsDemo {
     }
 
     public static void printCars(Map<String, Set<Car>> cars) {
-        for (Map.Entry e : cars.entrySet()) {
-            System.out.println(e.getKey() + " has " + e.getValue());
+        for (Map.Entry<String, Set<Car>> e : cars.entrySet()) {
+            Set<Car> ownedCars = e.getValue();
+            for (Car c : ownedCars) {
+                if (c.toString().equals("Car.Green")) {
+                    System.out.println(e.getKey() + " owns " + e.getValue());
+                }
+            }
         }
     }
 }
+
+//    public static void printCars(Map<String, Set<Car>> cars) {
+//        for (Map.Entry e : cars.entrySet()) {
+//            System.out.println(e.getKey() + " has " + e.getValue());
+//        }
+//    }

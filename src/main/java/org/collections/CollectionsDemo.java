@@ -39,7 +39,7 @@ public class CollectionsDemo {
     public static void printCars(Map<String, Set<Car>> cars) {
         for (Map.Entry<String, Set<Car>> e : cars.entrySet()) {
             Set<Car> ownedCars = e.getValue();
-            for (Car c : ownedCars) {
+            for (var c : ownedCars) {
                 if (c.toString().equals("Car.Green")) {
                     System.out.println(e.getKey() + " owns " + e.getValue());
                 }

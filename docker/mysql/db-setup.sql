@@ -8,6 +8,14 @@ CREATE TABLE Persons (
                          PRIMARY KEY(PersonID)
 );
 
+CREATE TABLE DestinationPrices
+(
+    City  varchar(255) NOT NULL,
+    Price int          NOT NULL,
+    PRIMARY KEY (City)
+);
+
 SELECT * from Persons;
+
 
 INSERT INTO Persons (FirstName, LastName, Gender, Title, Nat) VALUES ('Jane', 'Doe', 'female', 'Mrs', 'US');

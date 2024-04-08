@@ -1,5 +1,6 @@
 package org.web.testng;
 
+import org.collections.web.util.DbUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
@@ -8,6 +9,7 @@ import org.testng.asserts.SoftAssert;
 import java.sql.SQLException;
 import java.util.Map;
 
+import static org.collections.web.page.FinnAirPage.UPDATE_BASE;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FinnairTest extends AbstractNGTest {
@@ -81,15 +83,16 @@ public class FinnairTest extends AbstractNGTest {
     private void assertPriceEquality(Map<String, Float> destinations) throws SQLException {
         SoftAssert softAssert = new SoftAssert();
         for (Map.Entry<String, Float> e : destinations.entrySet()) {
-            Map<String, Float> cityPriceFromDb = finnAirPage.getCityPriceFromDb(e.getKey());
+            Map<String, Float> cityPriceFromDb = DbUtil.getCityPriceFromDb(e.getKey());
             Float dbPrice = cityPriceFromDb.get(e.getKey());
-            if (finnAirPage.getCityPriceFromDb(e.getKey()).isEmpty()) {
+            if (DbUtil.getCityPriceFromDb(e.getKey()).isEmpty()) {
                 finnAirPage.storeInDb(e.getKey(), e.getValue());
                 System.out.println("Stored a new destination: " + e.getKey() + " with price " + e.getValue());
             } else if (e.getValue().equals(dbPrice)) {
                 System.out.println(e.getKey() + " is already in db with correct price: " + e.getValue());
             } else {
-                finnAirPage.updatePriceinDb(e.getValue(), e.getKey());
+                String updateDest = String.format(UPDATE_BASE, e.getValue(), e.getKey());
+                DbUtil.storeInDB(updateDest);
                 System.out.println(e.getKey() + " is updated in db with the new price: " + e.getValue());
                 softAssert.fail("Price is updated for " + e.getKey() + " to new price: " + e.getValue());
             }

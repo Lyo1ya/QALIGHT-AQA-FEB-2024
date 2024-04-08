@@ -1,5 +1,6 @@
 package org.collections.web.page;
 
+import org.collections.web.util.DbUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -30,8 +31,7 @@ public class FinnAirPage extends AbstractPage {
             "INSERT INTO DestinationPrices (City, Price) " +
                     "VALUES ('%s', '%f')";
 
-    private final static String SELECT_BASE = "SELECT City, Price FROM DestinationPrices WHERE City = '%s'";
-    private final static String UPDATE_BASE = "UPDATE DestinationPrices SET Price = '%f' WHERE City = '%s'";
+    public final static String UPDATE_BASE = "UPDATE DestinationPrices SET Price = '%f' WHERE City = '%s'";
     public FinnAirPage(WebDriver driver) {
         super(driver, FINNAIR_URL);
     }
@@ -120,24 +120,12 @@ public class FinnAirPage extends AbstractPage {
         }
     }
 
-    public void storeInDb(String key, Float value) throws SQLException {
-        statement.execute(String.format(INSERT_BASE,
-                key, value));
+    public void storeInDb(String key, Float value) {
+        DbUtil.storeInDB(INSERT_BASE);
     }
 
-    public Map<String, Float> getCityPriceFromDb(String key) throws SQLException {
-        Map<String, Float> cityPriceFromDb = new HashMap<>();
-        ResultSet resultSet = statement.executeQuery(String.format(SELECT_BASE, key));
-            while (resultSet.next()) {
-                String city = resultSet.getString("City");
-                Float price = resultSet.getFloat("Price");
-                cityPriceFromDb.put(city, price);
-            }
-        return cityPriceFromDb;
-    }
-
-    public void updatePriceinDb(Float value, String key) throws SQLException {
-        statement.execute(String.format(UPDATE_BASE, value, key));
-    }
+//    public void updatePriceinDb(Float value, String key) throws SQLException {
+//        statement.execute(String.format(UPDATE_BASE, value, key));
+//    }
 
 }

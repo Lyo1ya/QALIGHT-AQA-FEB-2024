@@ -5,19 +5,15 @@ import org.collections.web.dto.IConvertible;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DbUtil {
 
     private static Connection connection;
     private static Statement statement;
-
-    private final static String INSERT_PERSON =
-            "INSERT INTO Persons (FirstName, LastName, Gender, Title, Nat) " +
-                    "VALUES ('%s', '%s', '%s', '%s', '%s')";
-
-    private final static String INSERT_FLIGHT =
-            "INSERT INTO FlightData (CityName, FlightCost) VALUES ('%s', '%s')";
+    private final static String SELECT_DEST_BASE = "SELECT City, Price FROM DestinationPrices WHERE City = '%s'";
 
     @SneakyThrows
     public static void storeInDB(String sql) {
@@ -50,6 +46,28 @@ public class DbUtil {
             }
         }
         return results;
+    }
+
+    @SneakyThrows
+    public static Map<String, Float> getCityPriceFromDb(String key) {
+        Map<String, Float> cityPriceFromDb = new HashMap<>();
+        String getCities = String.format(SELECT_DEST_BASE, key);
+        try {
+            getDBConnection();
+            ResultSet resultSet = statement.executeQuery(getCities);
+            while (resultSet.next()) {
+                String city = resultSet.getString("City");
+                Float price = resultSet.getFloat("Price");
+                cityPriceFromDb.put(city, price);
+            }
+        } catch (Exception e) {
+            System.out.println("Failed to execute SQL Query: " + getCities);
+        } finally {
+            if (connection != null) {
+                connection.close();
+            }
+        }
+        return cityPriceFromDb;
     }
 
     private static void getDBConnection() throws SQLException, ClassNotFoundException {

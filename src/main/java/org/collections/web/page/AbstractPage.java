@@ -21,7 +21,7 @@ public abstract class AbstractPage {
     }
 
     public boolean isPageLoaded(String partialUrl) {
-        return new WebDriverWait(driver, Duration.ofSeconds(30L))
+        return new WebDriverWait(driver, Duration.ofSeconds(40L))
                 .until(ExpectedConditions.urlContains(partialUrl));
     }
 

@@ -17,7 +17,6 @@ public class MySteps {
 
     public static GooglePage googlePage;
 
-
     @Given("I store group {string} in my DB")
     public void storePersonInDB(String alias) {
         List<PersonDto> randomPersons = (List<PersonDto>) CucumberContainer.map.get(alias);
@@ -52,5 +51,12 @@ public class MySteps {
                                 we -> we.getText().toUpperCase().contains(name.toUpperCase())),
                 "No person with this name found! " + name
         );
+    }
+
+    @Given("I search for {string}")
+    public void searchInGoogle(String site) {
+        googlePage.setSearchText(site);
+        googlePage.performSearch();
+        googlePage.getSearchHeaders().get(0).click();
     }
 }

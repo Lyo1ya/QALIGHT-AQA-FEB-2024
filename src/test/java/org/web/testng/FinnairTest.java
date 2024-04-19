@@ -1,7 +1,6 @@
 package org.web.testng;
 
 import org.collections.web.util.DbUtil;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -54,9 +53,6 @@ public class FinnairTest extends AbstractNGTest {
         finnAirPage.isPageLoaded("https://www.finnair.com/en");
         finnAirPage.acceptCookiesIfAvailable();
         finnAirPage.openLoginModal();
-        System.out.println("blabla");
-        WebElement loginModal = driver.findElement(By.className("login-dialog"));
-        assertTrue(loginModal.isDisplayed(), "Login modal is not displayed");
         finnAirPage.loginFieldInterracting();
         String loginErrorMessage = finnAirPage.getErrorMessage().get(0).getText();
         String passErrorMessage = finnAirPage.getErrorMessage().get(1).getText();

@@ -1,5 +1,6 @@
 package org.collections.web.page;
 
+import dev.failsafe.internal.util.Assert;
 import org.collections.web.util.DbUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -19,7 +20,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 public class FinnAirPage extends AbstractPage {
 
     private final By ENG_LANGUAGE_BUTTON = By.xpath("//ul/li[33]/div[2]/a");
-    private final By SEARCH_BAR = By.xpath("//div/fin-site-search-header-widget-starter/form/button[1]");
+    private final By SEARCH_BAR = By.xpath("//div/fin-site-search-header-widget-starter/form/button[1]/span[1]");
     private final By SEARCH_INPUT = By.xpath("//div/fin-site-search-header-widget-starter/form/input");
     private final By LOGIN_LABEL = By.xpath("//div[2]/fin-login-button");
     private final By LOGIN_CHECKBOX = By.xpath("//fcom-checkbox");
@@ -50,7 +51,7 @@ public class FinnAirPage extends AbstractPage {
     }
 
     public void setSearch() {
-        WebElement searchLabel = driver.findElement(SEARCH_BAR);
+        WebElement searchLabel = new WebDriverWait(driver, Duration.ofSeconds(5L)).until(presenceOfElementLocated(SEARCH_BAR));
         searchLabel.click();
     }
 
@@ -65,9 +66,15 @@ public class FinnAirPage extends AbstractPage {
                 .until(numberOfElementsToBeMoreThan(By.xpath("//a/div/em"), 2));
     }
 
+    public void closeFinnairPlusModal() {
+        WebElement finnairPlusModalCloseButton = driver.findElement(By.className("tooltip-close-x"));
+        finnairPlusModalCloseButton.click();
+    }
     public void openLoginModal() {
         WebElement loginLabel = driver.findElement(LOGIN_LABEL);
         loginLabel.click();
+        WebElement loginModal = driver.findElement(By.className("login-dialog"));
+        Assert.isTrue(loginModal.isDisplayed(), "Login modal is not displayed");
     }
 
     public void loginFieldInterracting() {
@@ -88,7 +95,7 @@ public class FinnAirPage extends AbstractPage {
         menuButton.click();
         WebElement destinationsButton = driver.findElements(By.className("navigation-category")).get(0);
         destinationsButton.click();
-        WebElement destinationsInFinland = new WebDriverWait(driver, Duration.ofSeconds(7L))
+        WebElement destinationsInFinland = new WebDriverWait(driver, Duration.ofSeconds(10L))
                 .until(presenceOfElementLocated(DESTINATIONS_FINLAND_BUTTON));
         destinationsInFinland.click();
     }
@@ -123,9 +130,5 @@ public class FinnAirPage extends AbstractPage {
     public void storeInDb(String key, Float value) {
         DbUtil.storeInDB(INSERT_BASE);
     }
-
-//    public void updatePriceinDb(Float value, String key) throws SQLException {
-//        statement.execute(String.format(UPDATE_BASE, value, key));
-//    }
 
 }
